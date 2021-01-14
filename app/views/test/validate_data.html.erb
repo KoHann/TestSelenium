@@ -1,0 +1,11 @@
+<%= button_to("Telecharger", send_zip_path, method: :get) %>
+
+<%= form_for :uploaded_data do |f| %>
+  <% @input_filenames.each do |file| %>
+    <div>
+      <%= f.label file %>
+      <%= f.check_box :valid %>
+      <%= "valid ?" %>
+    </div>
+  <% end %>
+<% end %>
