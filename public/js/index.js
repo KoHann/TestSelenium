@@ -7,18 +7,18 @@ const close = () => {
 	document.querySelector(".bottom-img").classList.add("bottom-img-close");
 };
 
-const submit = async (e) => {
-	e.preventDefault();
-	close();
-	await new Promise(resolve => setTimeout(resolve, 1000));
-	document.getElementById("form").submit();
+const open = () => {
+	document.querySelector(".top-jaw").classList.remove("top-jaw-close");
+	document.querySelector(".bottom-jaw").classList.remove("bottom-jaw-close");
+	document.querySelector(".top-img").classList.remove("top-img-close");
+	document.querySelector(".bottom-img").classList.remove("bottom-img-close");
 };
 
 const Form = {
 	view: () => {
-		return m("form#form", {enctype: "multipart/form-data", action: "/test_bill", method: "post"},
-			m("input", {type: 'file', name: "uploaded_data"}),
-			m("input", {type: 'submit'})
+		return m("form#form", {enctype: "multipart/form-data", action: "/parse_xls", method: "post"},
+			m(".button.file-button", "Fichier à vérifier", m("input", {type: 'file', name: "uploaded_data"})),
+			m("input.button", {type: 'submit'})
 		)
 	}
 };
@@ -26,13 +26,20 @@ const Form = {
 const App = {
 	view: () =>
 		m("main",
+			m(".title", "Automator"),
+			m(".banner",
+				m(".robot-icon", m("img", {src: "img/robot/robot_icon_info.png", height: "200"})),
+				m(".info-text",
+					m("", "Téléchargez ci-dessous votre fiche navette. Je me ferai un plaisir de la vérifier !")
+				),
+			),
 			m(Form),
-			m(".sidebar.left-sidebar"),
-			m(".sidebar.right-sidebar"),
-			m(".jaw.top-jaw"),
-			m("img.top-img", {src: "img/jaw-top.png"}),
+			m(".jaw.top-jaw",
+				m(".title.white", "Automator")
+			),
+			m("img.jaw-img.top-img", {src: "img/jaw-top.png"}),
 			m(".jaw.bottom-jaw"),
-			m("img.bottom-img", {src: "img/jaw-bottom.png"})
+			m("img.jaw-img.bottom-img", {src: "img/jaw-bottom.png"})
 		)
 
 };
@@ -40,4 +47,23 @@ const App = {
 
 m.mount(root, App);
 
-document.getElementById("form").addEventListener("submit", submit)
+document.getElementById("form").addEventListener("submit", async (event) => {
+	event.preventDefault();
+	close();
+	await new Promise(resolve => setTimeout(resolve, 1000));
+
+	fetch(event.target.action, {
+		method: 'POST',
+		body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+	}).then(async (response) => {
+		console.log(response);
+		if (response.status === 406 || response.status === 415) {
+			document.querySelector(".robot-icon").querySelector("img").setAttribute("src", "img/robot/robot_icon_error.png");
+			document.querySelector(".info-text").querySelector("div").textContent = response.body;
+			open();
+			await new Promise(resolve => setTimeout(resolve, 1000));
+		}
+	}).catch((error) => {
+		// TODO handle error
+	});
+});

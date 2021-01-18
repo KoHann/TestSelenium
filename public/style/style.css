@@ -6,6 +6,7 @@
 body {
 	margin: 0;
 	overflow: hidden;
+	font-family: apercu-pro, "Helvetica Neue", sans-serif;
 }
 
 main {
@@ -13,55 +14,112 @@ main {
 	height: 100%;
 	width: 100%;
 }
-form {
+
+.title {
 	position: absolute;
-	top: 50%;
+	top: 25%;
 	right: 0;
 	left: 0;
 
+	font-size: 60px;
+	font-weight: 800;
 	text-align: center;
 
 }
 
-.sidebar {
-	background-color: darkgray;
+.white {
+	color: white;
+}
 
+.banner {
 	position: absolute;
+	top: 35%;
+	right: 0;
+	left: 0;
+
+	height: 200px;
+	padding: 0 30%;
+	text-align: center;
+
+	display: flex;
+	justify-content: space-between;
+}
+
+.info-text {
+	font-size: 25px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+}
+
+form {
+	position: absolute;
+	top: 60%;
+	right: 0;
+	left: 0;
+
+	text-align: center;
+}
+
+.button {
+	display: inline-block;
+	color: #EFEFEF;
+	font-size: 28px;
+	padding: 10px 20px;
+
+	background-color: #2E2F30;
+	border: none;
+	border-radius: 10px;
+	margin: 0 20px;
+}
+
+.file-button {
+	position: relative;
+
+	color: #2E2F30;
+	background-color: #EFEFEF;
+	border: 2px solid #2E2F30 ;
+	cursor: pointer;
+}
+
+input[type=file] {
+	position: absolute;
+	right: 0;
 	top: 0;
+	left: 0;
 	bottom: 0;
 
-	width: 15%;
-}
+	height: 100%;
+	width: 100%;
 
-.left-sidebar {
-	left: 0;
-}
-
-.right-sidebar {
-	right: 0;
+	opacity: 0;
+	z-index: 1000;
 }
 
 .jaw {
-	background-color: black;
+	z-index: 2;
+	background-color: #666666;
 
 	position: absolute;
 
-	height: 42.5%;
+	height: 50%;
 	width: 100%;
 	transition: all 1s;
 }
 
 .top-jaw {
 
-	top: -42.5%;
+	top: -50%;
 }
 
 .bottom-jaw {
 
-	bottom: -42.5%;
+	bottom: -50%;
 }
 
-img {
+.jaw-img {
+	z-index: 1;
 	position: absolute;
 
 	width: 100%;
@@ -79,11 +137,11 @@ img {
 }
 
 .top-img-close {
-	top: 42.5%;
+	top: 50%;
 }
 
 .bottom-img-close {
-	bottom: 42.5%;
+	bottom: 50%;
 }
 
 .top-jaw-close {
