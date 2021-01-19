@@ -27,8 +27,9 @@ main {
 
 }
 
-.white {
+.title-waiting {
 	color: white;
+	top: 15%;
 }
 
 .banner {
@@ -51,6 +52,10 @@ main {
 	flex-direction: column;
 	justify-content: center;
 
+}
+
+.info-text-waiting {
+	color: white;
 }
 
 form {

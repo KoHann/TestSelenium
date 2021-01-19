@@ -35,7 +35,13 @@ const App = {
 			),
 			m(Form),
 			m(".jaw.top-jaw",
-				m(".title.white", "Automator")
+				m("..title.title-waiting", "Automator"),
+				m(".banner.banner-waiting",
+					m(".robot-icon.robot-icon-waiting", m("img", {src: "img/robot/robot_icon_waiting_1.png", height: "200"})),
+					m(".info-text.info-text-waiting",
+						m("", "Alors, alors, laissez moi regarder cela...")
+					),
+				),
 			),
 			m("img.jaw-img.top-img", {src: "img/jaw-top.png"}),
 			m(".jaw.bottom-jaw"),
@@ -54,16 +60,23 @@ document.getElementById("form").addEventListener("submit", async (event) => {
 
 	fetch(event.target.action, {
 		method: 'POST',
-		body: new URLSearchParams(new FormData(event.target)) // event.target is the form
+		body: new FormData(event.target), // event.target is the form
+		redirect: 'follow'
 	}).then(async (response) => {
 		console.log(response);
-		if (response.status === 406 || response.status === 415) {
-			document.querySelector(".robot-icon").querySelector("img").setAttribute("src", "img/robot/robot_icon_error.png");
-			document.querySelector(".info-text").querySelector("div").textContent = response.body;
-			open();
-			await new Promise(resolve => setTimeout(resolve, 1000));
+		if (response.redirected) {
+			window.location.href = response.url;
 		}
+		else if (response.status === 406 || response.status === 415) {
+			return response.text();
+		}
+	}).then(async (resp) => {
+		console.log(resp)
+		document.querySelector(".info-text").querySelector("div").textContent = resp;
+		document.querySelector(".robot-icon").querySelector("img").setAttribute("src", "img/robot/robot_icon_error.png");
+		open();
+		await new Promise(resolve => setTimeout(resolve, 1000));
 	}).catch((error) => {
-		// TODO handle error
+		console.log(error);
 	});
 });
